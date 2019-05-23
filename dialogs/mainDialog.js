@@ -104,7 +104,7 @@ class MainDialog extends ComponentDialog {
 
             // This is where calls to the booking AOU service or database would go.
             const fetch = require('node-fetch');
-            fetch(`http://api.nytimes.com/svc/semantic/v2/concept/name/nytd_geo/${result.location}?fields=all&api-key=4NaHSHuubILd2RT1LTH6N33w8RlY9sCE`)
+            fetch(`http://api.nytimes.com/svc/semantic/v2/concept/name/nytd_geo/${result.location}\?fields=all&api-key=4NaHSHuubILd2RT1LTH6N33w8RlY9sCE`)
                 .then(res => res.json())
                 .then(json => console.log(json));
             
