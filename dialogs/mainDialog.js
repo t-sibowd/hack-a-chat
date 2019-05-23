@@ -133,7 +133,7 @@ class MainDialog extends ComponentDialog {
 
             // This is where calls to the booking AOU service or database would go.
 
-            var foundPerson = findPeople(result);
+            var foundPerson = MainDialog.findPeople(result);
             
             // If the call to the booking service was successful tell the user.
             const timeProperty = new TimexProperty(result.travelDate);
