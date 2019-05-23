@@ -30,4 +30,4 @@ const PersonDatabase = {
     }
 }
 
-export default personDatabase;
+module.exports.PersonDatabase = PersonDatabase;
