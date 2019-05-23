@@ -23,7 +23,7 @@ const PersonDatabase = {
     },
     'Rachel': {
         name: 'Rachel',
-        Building: 60,
+        location: 60,
         expertise: ['java', 'python', 'MATLab', 'wearing pink'],
         team: 'A',
         languages: ['Mandarin', 'Cantonese', 'English']
