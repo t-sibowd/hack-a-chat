@@ -43,14 +43,11 @@ class MainDialog extends ComponentDialog {
 
         for (var key in PersonDatabase) {
             console.log("checking " + key);
-            console.log("want " + constraints.expertise);
-            console.log("have " + PersonDatabase[key].expertise);
-            console.log(['hello', 'javascript'].includes('javascript'));
-            console.log(PersonDatabase[key].expertise.includes(constraints.expertise));
-            console.log(!constraints.language || PersonDatabase[key].languages.includes(constraints.language));
+            console.log(!constraints.expertise || PersonDatabase[key].expertise.includes(constraints.expertise[0]));
+            console.log(!constraints.language || PersonDatabase[key].languages.includes(constraints.language[0]));
             console.log(!constraints.team || PersonDatabase[key].team === constraints.team);
-            if ((!constraints.expertise || PersonDatabase[key].expertise.includes(constraints.expertise)) &&
-                (!constraints.language || PersonDatabase[key].language.includes(constraints.language)) &&
+            if ((!constraints.expertise || PersonDatabase[key].expertise.includes(constraints.expertise[0])) &&
+                (!constraints.language || PersonDatabase[key].language.includes(constraints.language[0])) &&
                 (!constraints.team || PersonDatabase[key].team === constraints.team)) {
                 console.log("matched " + PersonDatabase[key].name);
                 PersonDatabase[key].dist = Math.abs(PersonDatabase[key].location - constraints.location);
