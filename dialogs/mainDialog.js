@@ -153,7 +153,8 @@ class MainDialog extends ComponentDialog {
         } else {
             await stepContext.context.sendActivity('Thank you.');
         }
-        return await stepContext.endDialog();
+        return await stepContext.beginDialog(MAIN_WATERFALL_DIALOG);
+        //return await stepContext.endDialog();
     }
 }
 
