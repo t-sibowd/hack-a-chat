@@ -3,6 +3,7 @@
 
 const { TimexProperty } = require('@microsoft/recognizers-text-data-types-timex-expression');
 const { ComponentDialog, DialogSet, DialogTurnStatus, TextPrompt, WaterfallDialog } = require('botbuilder-dialogs');
+const { PersonDatabase } = require('../resources/personDatabase');
 const { BookingDialog } = require('./bookingDialog');
 const { ArticleDialog } = require('./findArticleDialog');
 const { PersonDialog } = require('./personDialog');
@@ -113,20 +114,36 @@ class MainDialog extends ComponentDialog {
             console.log(result);
 
             // This is where calls to the booking AOU service or database would go.
-            const fetch = require('node-fetch');
-            fetch(`http://api.nytimes.com/svc/semantic/v2/concept/name/nytd_geo/${result.location}\?fields=all&api-key=ETprbTAtdozzvAFcloX5h8jPtOqZ9y4Q`)
-                .then(res => res.json())
-                .then(json => console.log(json));
+
+            var foundPerson = findPeople(result);
             
             // If the call to the booking service was successful tell the user.
             const timeProperty = new TimexProperty(result.travelDate);
             const travelDateMsg = timeProperty.toNaturalLanguage(new Date(Date.now()));
-            const msg = `I have you booked to ${ result.destination } from ${ result.origin } on ${ travelDateMsg }.`;
-            await stepContext.context.sendActivity(msg);
+            const msg = `You should talk to ${foundPerson.name} in Building ${foundPerson.location}!`;
+            await stepContext.context.sendActivity(msg, 'yeet');
         } else {
             await stepContext.context.sendActivity('Thank you.');
         }
         return await stepContext.endDialog();
+    }
+
+    static findPeople(constraints) {
+        var bestResult;
+
+        for (var key in PersonDatabase) {
+            if ((!constraints.expertise || PersonDatabase[key].expertise === constraints.expertise) &&
+                (!constraints.language || PersonDatabase[key].language === constraints.language) &&
+                (!constraints.team || PersonDatabase[key].team === constraints.team)) {
+
+                PersonDatabase[key].dist = Math.abs(PersonDatabase[key].location - constraints.location);
+                if (!bestResult || PersonDatabase[key].dist < bestResult.dist) {
+                    bestResult = PersonDatabase[key];
+                }
+            }
+        }
+
+        return bestResult;
     }
 }
 
