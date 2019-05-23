@@ -97,7 +97,11 @@ class MainDialog extends ComponentDialog {
             // Now we have all the booking details.
 
             // This is where calls to the booking AOU service or database would go.
-
+            const fetch = require('node-fetch');
+            fetch('http://api.nytimes.com/svc/semantic/v2/concept/name/nytd_geo/${result.location}?fields=all&api-key=4NaHSHuubILd2RT1LTH6N33w8RlY9sCE')
+                .then(res => res.json())
+                .then(json => console.log(json));
+            
             // If the call to the booking service was successful tell the user.
             const timeProperty = new TimexProperty(result.travelDate);
             const travelDateMsg = timeProperty.toNaturalLanguage(new Date(Date.now()));
