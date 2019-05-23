@@ -38,6 +38,24 @@ class MainDialog extends ComponentDialog {
         this.initialDialogId = MAIN_WATERFALL_DIALOG;
     }
 
+    static findPeople(constraints) {
+        var bestResult;
+
+        for (var key in PersonDatabase) {
+            if ((!constraints.expertise || PersonDatabase[key].expertise === constraints.expertise) &&
+                (!constraints.language || PersonDatabase[key].language === constraints.language) &&
+                (!constraints.team || PersonDatabase[key].team === constraints.team)) {
+
+                PersonDatabase[key].dist = Math.abs(PersonDatabase[key].location - constraints.location);
+                if (!bestResult || PersonDatabase[key].dist < bestResult.dist) {
+                    bestResult = PersonDatabase[key];
+                }
+            }
+        }
+
+        return bestResult;
+    }
+
     /**
      * The run method handles the incoming activity (in the form of a DialogContext) and passes it through the dialog system.
      * If no dialog is active, it will start the default dialog.
@@ -126,24 +144,6 @@ class MainDialog extends ComponentDialog {
             await stepContext.context.sendActivity('Thank you.');
         }
         return await stepContext.endDialog();
-    }
-
-    static findPeople(constraints) {
-        var bestResult;
-
-        for (var key in PersonDatabase) {
-            if ((!constraints.expertise || PersonDatabase[key].expertise === constraints.expertise) &&
-                (!constraints.language || PersonDatabase[key].language === constraints.language) &&
-                (!constraints.team || PersonDatabase[key].team === constraints.team)) {
-
-                PersonDatabase[key].dist = Math.abs(PersonDatabase[key].location - constraints.location);
-                if (!bestResult || PersonDatabase[key].dist < bestResult.dist) {
-                    bestResult = PersonDatabase[key];
-                }
-            }
-        }
-
-        return bestResult;
     }
 }
 
