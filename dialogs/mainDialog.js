@@ -42,10 +42,17 @@ class MainDialog extends ComponentDialog {
         var bestResult;
 
         for (var key in PersonDatabase) {
-            if ((!constraints.expertise || PersonDatabase[key].expertise === constraints.expertise) &&
-                (!constraints.language || PersonDatabase[key].language === constraints.language) &&
+            console.log("checking " + key);
+            console.log("want " + constraints.expertise);
+            console.log("have " + PersonDatabase[key].expertise);
+            console.log(['hello', 'javascript'].includes('javascript'));
+            console.log(PersonDatabase[key].expertise.includes(constraints.expertise));
+            console.log(!constraints.language || PersonDatabase[key].languages.includes(constraints.language));
+            console.log(!constraints.team || PersonDatabase[key].team === constraints.team);
+            if ((!constraints.expertise || PersonDatabase[key].expertise.includes(constraints.expertise)) &&
+                (!constraints.language || PersonDatabase[key].language.includes(constraints.language)) &&
                 (!constraints.team || PersonDatabase[key].team === constraints.team)) {
-
+                console.log("matched " + PersonDatabase[key].name);
                 PersonDatabase[key].dist = Math.abs(PersonDatabase[key].location - constraints.location);
                 if (!bestResult || PersonDatabase[key].dist < bestResult.dist) {
                     bestResult = PersonDatabase[key];
@@ -134,7 +141,7 @@ class MainDialog extends ComponentDialog {
             // This is where calls to the booking AOU service or database would go.
 
             var foundPerson = MainDialog.findPeople(result);
-            
+            console.log(foundPerson);
             // If the call to the booking service was successful tell the user.
             const timeProperty = new TimexProperty(result.travelDate);
             const travelDateMsg = timeProperty.toNaturalLanguage(new Date(Date.now()));
