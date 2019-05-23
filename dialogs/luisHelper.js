@@ -68,10 +68,10 @@ class LuisHelper {
     }
 
     static parseGeographyV2Entity(result) {
-        const entities = result.LuisResult.entities
+        const entities = result.entities['news_location']
         if (!entities || !entities[0]) return undefined;
 
-        const location = geographyV2Entity[0].entity;
+        const location = entities[0];
         return location;
     }
 }
