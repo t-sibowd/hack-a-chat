@@ -27,10 +27,10 @@ class LuisHelper {
 
             if (intent === 'findPerson') {
                 console.log(recognizerResult)
-                details.language = recognizerResult.entities['language']
+                details.language = recognizerResult.entities['languages']
                 details.expertise = recognizerResult.entities['expertise']
                 details.team = recognizerResult.entities['team']
-
+                details.location = LuisHelper.parseLocation(recognizerResult)
             }
 
             if (intent === 'Book_flight') {
