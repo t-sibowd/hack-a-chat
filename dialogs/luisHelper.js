@@ -74,6 +74,14 @@ class LuisHelper {
         const location = entities[0];
         return location;
     }
+
+    static parseLocation(result) {
+        const locationEntity = result.entities['location']
+        if (!locationEntity || !locationEntities[0]) return undefined;
+
+        const location = locationEntity.replace(/[^0-9\.]+/g, "");
+        return location;
+    }
 }
 
 module.exports.LuisHelper = LuisHelper;
