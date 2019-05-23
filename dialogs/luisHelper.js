@@ -10,7 +10,7 @@ class LuisHelper {
      * @param {TurnContext} context
      */
     static async executeLuisQuery(logger, context) {
-        const bookingDetails = {};
+        const details = {};
 
         try {
             const recognizer = new LuisRecognizer({
@@ -23,22 +23,26 @@ class LuisHelper {
 
             const intent = LuisRecognizer.topIntent(recognizerResult);
 
-            bookingDetails.intent = intent;
+            details.intent = intent;
 
             if (intent === 'Book_flight') {
                 // We need to get the result from the LUIS JSON which at every level returns an array
 
-                bookingDetails.destination = LuisHelper.parseCompositeEntity(recognizerResult, 'To', 'Airport');
-                bookingDetails.origin = LuisHelper.parseCompositeEntity(recognizerResult, 'From', 'Airport');
+                details.destination = LuisHelper.parseCompositeEntity(recognizerResult, 'To', 'Airport');
+                details.origin = LuisHelper.parseCompositeEntity(recognizerResult, 'From', 'Airport');
 
                 // This value will be a TIMEX. And we are only interested in a Date so grab the first result and drop the Time part.
                 // TIMEX is a format that represents DateTime expressions that include some ambiguity. e.g. missing a Year.
-                bookingDetails.travelDate = LuisHelper.parseDatetimeEntity(recognizerResult);
+                details.travelDate = LuisHelper.parseDatetimeEntity(recognizerResult);
+            }
+
+            if (intent === 'List_articles_by_place') {
+                details.location = LuisHelper.parseGeographyV2Entity(recognizerResult);
             }
         } catch (err) {
             logger.warn(`LUIS Exception: ${ err } Check your LUIS configuration`);
         }
-        return bookingDetails;
+        return details;
     }
 
     static parseCompositeEntity(result, compositeName, entityName) {
@@ -61,6 +65,14 @@ class LuisHelper {
 
         const datetime = timex[0].split('T')[0];
         return datetime;
+    }
+
+    static parseGeographyV2Entity(result) {
+        const geographyV2Entity = result.entities['geographyV2'];
+        if (!geographyV2Entity || !geographyV2Entity[0]) return undefined;
+
+        const location = geographyV2Entity[0];
+        return location;
     }
 }
 
