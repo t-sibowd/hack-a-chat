@@ -6,10 +6,13 @@ const { ComponentDialog, DialogSet, DialogTurnStatus, TextPrompt, WaterfallDialo
 const { PersonDatabase } = require('../resources/personDatabase');
 const { BookingDialog } = require('./bookingDialog');
 const { ArticleDialog } = require('./findArticleDialog');
+const { PersonDialog } = require('./personDialog');
+
 const { LuisHelper } = require('./luisHelper');
 
 const MAIN_WATERFALL_DIALOG = 'mainWaterfallDialog';
 const ARTICLE_DIALOG = 'articleDialog';
+const PERSON_DIALOG = 'personDialog'
 
 class MainDialog extends ComponentDialog {
     constructor(logger) {
@@ -25,7 +28,7 @@ class MainDialog extends ComponentDialog {
         // Define the main dialog and its related components.
         // This is a sample "book a flight" dialog.
         this.addDialog(new TextPrompt('TextPrompt'))
-            .addDialog(new ArticleDialog(ARTICLE_DIALOG))
+            .addDialog(new PersonDialog(PERSON_DIALOG))
             .addDialog(new WaterfallDialog(MAIN_WATERFALL_DIALOG, [
                 this.introStep.bind(this),
                 this.actStep.bind(this),
@@ -62,7 +65,7 @@ class MainDialog extends ComponentDialog {
             return await stepContext.next();
         }
 
-        return await stepContext.prompt('TextPrompt', { prompt: 'What can I help you with today?\nSay something like "What\'s the news in Kansas"' });
+        return await stepContext.prompt('TextPrompt', { prompt: 'Who do you want to find?' });
     }
 
     /**
@@ -70,7 +73,9 @@ class MainDialog extends ComponentDialog {
      * Then, it hands off to the bookingDialog child dialog to collect any remaining details.
      */
     async actStep(stepContext) {
-        let queryResult = {};
+        let queryResult = {
+            location: 27,
+        };
 
         if (process.env.LuisAppId && process.env.LuisAPIKey && process.env.LuisAPIHostName) {
             // Call LUIS and gather any potential booking details.
@@ -85,6 +90,9 @@ class MainDialog extends ComponentDialog {
         // will have multiple different intents each corresponding to starting a different child dialog.
 
         // Run the BookingDialog giving it whatever details we have from the LUIS call, it will fill out the remainder.
+        if (queryResult.intent === 'findPerson') {
+            return await stepContext.beginDialog(PERSON_DIALOG, queryResult)
+        }
         if (queryResult.intent === 'List_articles_by_place') {
             return await stepContext.beginDialog(ARTICLE_DIALOG, queryResult)
         }
@@ -104,6 +112,7 @@ class MainDialog extends ComponentDialog {
             console.log(result);
 
             // This is where calls to the booking AOU service or database would go.
+
             var foundPerson = findPeople(result);
             
             // If the call to the booking service was successful tell the user.
