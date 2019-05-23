@@ -132,13 +132,15 @@ class MainDialog extends ComponentDialog {
             console.log(result);
 
             // This is where calls to the booking AOU service or database would go.
-
+            let msg = 'I wasn\'t able to find anyone :( Try searching with different specs?'
             var foundPerson = MainDialog.findPeople(result);
+            if (foundPerson) {
+                msg = `You should talk to ${foundPerson.name} in Building ${foundPerson.location}!`; 
+            }
             
             // If the call to the booking service was successful tell the user.
             const timeProperty = new TimexProperty(result.travelDate);
             const travelDateMsg = timeProperty.toNaturalLanguage(new Date(Date.now()));
-            const msg = `You should talk to ${foundPerson.name} in Building ${foundPerson.location}!`;
             await stepContext.context.sendActivity(msg, 'yeet');
         } else {
             await stepContext.context.sendActivity('Thank you.');
