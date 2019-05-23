@@ -26,7 +26,7 @@ class LuisHelper {
             details.intent = intent;
 
             if (intent === 'findPerson') {
-                console.log(recognizerResult)
+                console.log(recognizerResult.entities)
                 details.language = recognizerResult.entities['languages']
                 details.expertise = recognizerResult.entities['expertise']
                 details.team = recognizerResult.entities['team']
@@ -85,7 +85,8 @@ class LuisHelper {
 
     static parseLocation(result) {
         const locationEntity = result.entities['location']
-        if (!locationEntity || !locationEntities[0]) return undefined;
+        console.log(locationEntity)
+        if (!locationEntity || !locationEntity[0]) return undefined;
 
         const location = locationEntity[0].replace(/[^0-9\.]+/g, "");
         return location;
