@@ -46,7 +46,7 @@ class PersonDialog extends CancelAndHelpDialog {
 
         // Capture the results of the previous step
         personDetails.expertise = stepContext.result;
-        let msg = `Please confirm, you would like to search for a person with expertise in ${personDetails.expertise} near Buidling ${personDetails.location}`
+        let msg = `Please confirm, you would like to search for a person with expertise in ${personDetails.expertise} near Building ${personDetails.location}`
         if (personDetails.language) {
             msg = msg + ` who speaks ${personDetails.language}`
         }
