@@ -68,4 +68,4 @@ class FindArticleDialog extends CancelAndHelpDialog {
 
 }
 
-module.exports.ArticleDialog = ArticleDialog;
+module.exports.ArticleDialog = FindArticleDialog;
