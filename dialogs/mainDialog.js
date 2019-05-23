@@ -72,9 +72,7 @@ class MainDialog extends ComponentDialog {
      * Then, it hands off to the bookingDialog child dialog to collect any remaining details.
      */
     async actStep(stepContext) {
-        let queryResult = {
-            location: 27,
-        };
+        let queryResult = {}
 
         if (process.env.LuisAppId && process.env.LuisAPIKey && process.env.LuisAPIHostName) {
             // Call LUIS and gather any potential booking details.
@@ -83,6 +81,10 @@ class MainDialog extends ComponentDialog {
             queryResult = await LuisHelper.executeLuisQuery(this.logger, stepContext.context);
 
             this.logger.log('LUIS extracted these article details:', queryResult);
+        }
+
+        if (!queryResult.location) {
+            queryResult.location = 27
         }
 
         // In this sample we only have a single intent we are concerned with. However, typically a scenario

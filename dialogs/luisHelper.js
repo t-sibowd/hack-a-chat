@@ -25,6 +25,14 @@ class LuisHelper {
 
             details.intent = intent;
 
+            if (intent === 'findPerson') {
+                console.log(recognizerResult)
+                details.language = recognizerResult.entities['language']
+                details.expertise = recognizerResult.entities['expertise']
+                details.team = recognizerResult.entities['team']
+
+            }
+
             if (intent === 'Book_flight') {
                 // We need to get the result from the LUIS JSON which at every level returns an array
 
