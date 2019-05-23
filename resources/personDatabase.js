@@ -4,21 +4,21 @@ const PersonDatabase = {
         location: 27,
         expertise: ['flips', 'bowtie tying', 'javascript'],
         team: 'A',
-        languages: ['English', 'Italian', 'Thai']
+        languages: ['english', 'italian', 'thai']
     },
     'Sashank': {
         name: 'Sashank',
         location: 49,
         expertise: ['javascript', 'bagpiping', 'Visual Basic'],
         team: 'B',
-        languages: ['English', 'Spanish']
+        languages: ['english', 'spanish']
     },
     'Carra': {
         name: 'Carra',
         location: 92,
         expertise: ['ballet', 'boxing', 'writing', 'sleeping', 'running'],
         team: 'C',
-        languages: ['English', 'Mandarin', 'Spanish', 'German']
+        languages: ['english', 'mandarin', 'spanish', 'german']
 
     },
     'Rachel': {
@@ -26,7 +26,7 @@ const PersonDatabase = {
         location: 60,
         expertise: ['java', 'python', 'MATLab', 'wearing pink'],
         team: 'A',
-        languages: ['Mandarin', 'Cantonese', 'English']
+        languages: ['mandarin', 'cantonese', 'english']
     }
 }
 
